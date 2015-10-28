@@ -71,7 +71,7 @@ void setup() {
   Serial.println("Voltage following");
   Serial.println("Rolf Noellenburg");
   Serial.println("version 0.52");
-  delay(3000);                            // Reglerinitialisierung
+  delay(3000);
 }
 
 void loop() {
@@ -79,7 +79,6 @@ void loop() {
     doWork();
   } 
   else if (rcReceiver.hasError()) {
-    // Fehlerbehandlung failsafe oder sowas...
     doWork();
   }
 }
@@ -95,10 +94,10 @@ void doWork() {
 void fast_loop()
 {
   byte value = rcReceiver.getValue(); //Wertebereich 0 - 255
-  RCin = map(value, 0, 250, 1000, 2000);  //auf msec mappen
-  U_control = map(value, 125, 250, U_max, U_min);  //auf msec mappen
+  RCin = map(value, 0, 250, 1000, 2000);  // map to msec
+  U_control = map(value, 125, 250, U_max, U_min);  // map to desired voltage
 
-    Uticks = analogRead(VoltagePin);
+  Uticks = analogRead(VoltagePin);
   Iticks = analogRead(CurrentPin);
   Pticks = (Iticks - I_0) * Uticks;
   Pticks_C = Pticks;
@@ -106,7 +105,6 @@ void fast_loop()
   U = Uticks*11.17/809;
   I = (Iticks-I_0)*0.02642;
   P = I * U;
-
 
   // Voltage following
   if (U<U_control/100){
@@ -145,64 +143,13 @@ void fast_loop()
     Serial.print ("  IT: ");
     Serial.print (Iticks);
     //Serial.print ("A  P-Ticks: ");
-    //Serial.print (Pticks);                   //Ausgabe der Werte der Solarspannung
+    //Serial.print (Pticks);
     Serial.print ("  P: ");
-    Serial.print (P);                   //Ausgabe der Werte der Solarspannung
+    Serial.print (P);
     Serial.print ("W  RCin: ");          
-    Serial.print (RCin);             //Ausgabe des Wertes für den Empfängerimpuls
+    Serial.print (RCin);
     Serial.print ("  RCout: ");
-    Serial.print (RCout);                       //Ausgabe des Wertes für den Reglerwert
+    Serial.print (RCout);
     Serial.println(""); 
   }
-
-
-
-
-  //  switch (medium_loopCounter) {
-  //  case 0:
-  //    medium_loopCounter++;
-  //    break;
-  //
-  //  case 1:
-  //    medium_loopCounter++;
-  //    Serial.print ("  FLT: ");
-  //    Serial.print (deltaMiliSeconds);
-  //    //Serial.print ("  U-Ticks: ");
-  //    //Serial.print (Uticks);
-  //    Serial.print ("  U: ");
-  //    Serial.print (U);
-  //    Serial.print ("V  U_in: ");
-  //    Serial.print (U_control);
-  //    Serial.print ("  I: ");
-  //    Serial.print (I);
-  //    Serial.print ("  IT: ");
-  //    Serial.print (Iticks);
-  //    //Serial.print ("A  P-Ticks: ");
-  //    //Serial.print (Pticks);                   //Ausgabe der Werte der Solarspannung
-  //    Serial.print ("  P: ");
-  //    Serial.print (P);                   //Ausgabe der Werte der Solarspannung
-  //    Serial.print ("W  RCin: ");          
-  //    Serial.print (RCin);             //Ausgabe des Wertes für den Empfängerimpuls
-  //    Serial.print ("  RCout: ");
-  //    Serial.print (RCout);                       //Ausgabe des Wertes für den Reglerwert
-  //    Serial.println(""); 
-  //    break;
-  //
-  //  case 2:
-  //    medium_loopCounter++;		
-  //    break;
-  //
-  //  case 3:
-  //    medium_loopCounter++;
-  //    break;
-  //
-  //  case 4:
-  //    medium_loopCounter=0;
-  //    break;
-  //  }
 }
-
-
-
-
-
