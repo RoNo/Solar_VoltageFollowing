@@ -1,25 +1,25 @@
-#include "RCReceive.h"
-#include <Servo.h>
-
 /*
  Solar Voltage following
  Copyright (c) 2015 Rolf Noellenburg.  All right reserved.
- 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU Lesser General Public
- License as published by the Free Software Foundation; either
- version 2.1 of the License, or (at your option) any later version.
- 
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public
- License along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * It is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with paparazzi; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
  */
 
+#include "RCReceive.h"
+#include <Servo.h>
 
 //Voltage threshold in centivolts
 int U_max = 620;
@@ -62,11 +62,9 @@ int mainLoop_count = 0;
 
 
 void setup() {
-  // RC Receiver in Interruptvariante
   rcReceiver.attachInt(PIN_RC);
-
-  Controllerpin.attach(5);                    // Regler wird an pin D5 angeschlossen
-  Controllerpin.writeMicroseconds(1020);      // Reglerinitialisierung
+  Controllerpin.attach(5);                    // Controller on pin D5
+  Controllerpin.writeMicroseconds(1020);
   Serial.begin(57600);
   Serial.println("Voltage following");
   Serial.println("Rolf Noellenburg");
@@ -93,9 +91,9 @@ void doWork() {
 }
 void fast_loop()
 {
-  byte value = rcReceiver.getValue(); //Wertebereich 0 - 255
-  RCin = map(value, 0, 250, 1000, 2000);  // map to msec
-  U_control = map(value, 125, 250, U_max, U_min);  // map to desired voltage
+  byte value = rcReceiver.getValue(); //Values between 0 - 255
+  RCin = map(value, 0, 125, 1000, 2000);  // map to msec
+  U_control = map(value, 126, 255, U_max, U_min);  // map to desired voltage
 
   Uticks = analogRead(VoltagePin);
   Iticks = analogRead(CurrentPin);
